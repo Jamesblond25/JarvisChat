@@ -8,16 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Configs\Agents.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Configs\Agents.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="9.0.6" />
     <PackageReference Include="System.Speech" Version="9.0.5" />
   </ItemGroup>

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JarvisChat", "JarvisChat.csproj", "{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgentManagemer", "..\AgentManagemer\AgentManagemer.csproj", "{46C57102-8C43-45CC-8B3A-DF3AA3705B25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46C57102-8C43-45CC-8B3A-DF3AA3705B25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46C57102-8C43-45CC-8B3A-DF3AA3705B25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46C57102-8C43-45CC-8B3A-DF3AA3705B25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46C57102-8C43-45CC-8B3A-DF3AA3705B25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

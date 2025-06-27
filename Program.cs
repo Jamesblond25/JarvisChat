@@ -1,8 +1,13 @@
-﻿class Program
+﻿
+namespace JarvisChat
 {
-    static async Task Main(string[] args)
+    class Program
     {
-        var jarvis = new Jarvis();
-        await jarvis.RunAsync();
+        static async Task Main(string[] args)
+        {
+            var jarvis = new Jarvis();
+            await jarvis.RunAsync();
+        }
     }
+
 }

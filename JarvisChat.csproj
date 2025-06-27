@@ -7,9 +7,6 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Configs\Agents.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Configs\Agents.json">

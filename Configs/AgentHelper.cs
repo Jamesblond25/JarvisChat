@@ -1,63 +1,61 @@
-﻿using JarvisChat.Configs;
-using System.Text.Json;
-using System.Text;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System;
-using System.Collections.Generic;
-
-public static class AgentHelpers
+﻿using System.Text;
+namespace JarvisChat.Configs
 {
-    public static async Task<string> FetchDataFromUrlAsync(
-    string url,
-    Dictionary<string, string> inputVars,
-    HttpClient client,
-    Dictionary<string, string>? headers = null,
-    HttpContent? body = null)
+    public static class AgentHelpers
     {
-        foreach (var pair in inputVars)
+        public static async Task<string> FetchDataFromUrlAsync(
+            string url,
+            Dictionary<string, string> inputVars,
+            HttpClient client,
+            Dictionary<string, string>? headers = null,
+            HttpContent? bodyString = null,
+            string? bodyContent = null)
         {
-            url = url.Replace("{" + pair.Key + "}", pair.Value, StringComparison.OrdinalIgnoreCase);
-        }
-
-        Console.WriteLine($"Fetching URL: {url}");
-
-        var request = new HttpRequestMessage(body == null ? HttpMethod.Get : HttpMethod.Post, url);
-
-        if (headers != null)
-        {
-            foreach (var header in headers)
+            // Replace URL placeholders if any
+            foreach (var pair in inputVars)
             {
-                request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                url = url.Replace("{" + pair.Key + "}", pair.Value, StringComparison.OrdinalIgnoreCase);
             }
-        }
 
-        if (body != null)
-        {
-            request.Content = body;
-        }
+            Console.WriteLine($"Fetching URL: {url}");
 
-        try
-        {
+            var request = new HttpRequestMessage(
+                bodyString == null ? HttpMethod.Get : HttpMethod.Post,
+                url);
+
+            // Add headers
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    // For User-Agent and other special headers, TryAddWithoutValidation is safer
+                    request.Headers.TryAddWithoutValidation(header.Key, header.Value);
+                }
+            }
+
+            // Add body content if present
+            if (bodyString != null)
+            {
+                request.Content = bodyString;
+            }
+
             var response = await client.SendAsync(request);
 
-            // If failure status, read the content to see details
             if (!response.IsSuccessStatusCode)
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
                 throw new HttpRequestException(
-                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}.\nResponse content: {errorContent}");
+                    $"HTTP {(int)response.StatusCode} {response.ReasonPhrase}. Response content: {errorContent}");
             }
 
             var responseBody = await response.Content.ReadAsStringAsync();
+
             Console.WriteLine("Response received");
+
             return responseBody;
         }
-        catch (HttpRequestException ex)
-        {
-            Console.WriteLine($"Error fetching data: {ex.Message}");
-            throw;
-        }
-    }
 
+
+    }
 }
+

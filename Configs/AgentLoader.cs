@@ -1,11 +1,14 @@
-﻿using JarvisChat.Configs;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-public static class AgentLoader
+namespace JarvisChat.Configs
 {
-    public static List<AgentConfig> LoadAgents(string filePath)
+    public static class AgentLoader
     {
-        var json = File.ReadAllText(filePath);
-        return JsonSerializer.Deserialize<List<AgentConfig>>(json);
+        public static List<AgentConfig> LoadAgents(string filePath)
+        {
+            var json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<AgentConfig>>(json);
+        }
     }
 }
+

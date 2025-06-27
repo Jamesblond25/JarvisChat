@@ -1,0 +1,24 @@
+[
+  {
+    "Name": "MinecraftAgent",
+    "PromptTemplate": "Summarize the Minecraft server status using this JSON: {data}",
+    "Model": "jarvis",
+    "Parameters": {
+      "temperature": "0.3"
+    },
+    "DataURL": "https://api.mcsrvstat.us/2/mc.hypixel.net",
+    "Headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+      "Accept": "application/json"
+    },
+    "Body": null
+  },
+  {
+    "Name": "StatsAgent",
+    "PromptTemplate": "Your CPU usage average is {cpu}. Say this more conversationally.",
+    "Model": "Jarvis:latest",
+    "Parameters": {
+      "temperature": "0.2"
+    }
+  }
+]

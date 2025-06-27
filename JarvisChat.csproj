@@ -12,4 +12,9 @@
     <PackageReference Include="System.Speech" Version="9.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AgentManagemer\AgentManager.csproj" />
+    <ProjectReference Include="..\LLMManager\LLMManager.csproj" />
+  </ItemGroup>
+
 </Project>

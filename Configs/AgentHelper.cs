@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http.Json;
+using System.Text;
 namespace JarvisChat.Configs
 {
     public static class AgentHelpers
@@ -55,7 +56,34 @@ namespace JarvisChat.Configs
             return responseBody;
         }
 
+        public static string RunPowerShellScript(AgentConfig agentname)
+        {
+            string script = agentname.Script;
+            if (string.IsNullOrWhiteSpace(script))
+                throw new System.Exception("PowerShell agent is missing a script.");
 
+            var psi = new System.Diagnostics.ProcessStartInfo()
+            {
+                FileName = "powershell",
+                Arguments = $"-NoProfile -Command \"{script}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = System.Diagnostics.Process.Start(psi);
+            string output = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+            process.WaitForExit();
+
+            if (process.ExitCode != 0)
+            {
+                throw new System.Exception($"PowerShell script failed: {error}");
+            }
+
+            return output.Trim();
+        }
     }
 }
 

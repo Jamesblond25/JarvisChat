@@ -1,35 +1,38 @@
 [
-    {
-      "Name": "MyCobblemonServer",
-      "PromptTemplate": "Summarize this Minecraft server json showing MOTD max player count, and active players using this JSON, ",
-      "Model": "Jarvis:latest",
-      "Parameters": {
-        "temperature": "0.1"
-      },
-      "DataURL": "https://api.mcsrvstat.us/3/cobbleservermc.duckdns.org",
-      "Headers": {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
-        "Accept": "application/json",
-        "Accept-Language": "en-US,en;q=0.9"
-      },
-      "Body": null
+  {
+    "Name": "MyCobblemonServer",
+    "Type": "HTTP",
+    "Description": "Fetches the status of the Minecraft server \u0027cobbleservermc.duckdns.org\u0027 and summarizes its MOTD, maximum player capacity, and current active players.",
+    "PromptTemplate": "Summarize this Minecraft server json showing MOTD max player count, and active players using this JSON, ",
+    "Model": "Jarvis:latest",
+    "DataURL": "https://api.mcsrvstat.us/3/cobbleservermc.duckdns.org",
+    "Script": null,
+    "Headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+      "Accept": "application/json",
+      "Accept-Language": "en-US,en;q=0.9"
     },
+    "Body": null
+  },
   {
     "Name": "StatsAgent",
-    "PromptTemplate": "Your CPU usage average is {cpu}. Say this more conversationally.",
+    "Type": "PowerShell",
+    "Description": "Generates a conversational summary based on the average CPU usage provided as input.",
+    "PromptTemplate": "Your CPU usage average is {cpu}. Say this more conversationally and list the items.",
     "Model": "Jarvis:latest",
-    "Parameters": {
-      "temperature": "0.2"
-    }
+    "DataURL": null,
+    "Script": "$cpu=([math]::round((Get-WmiObject Win32_Processor | Measure-Object LoadPercentage -Average).Average,2));$gpu=try{([math]::round((Get-WmiObject -Namespace root\\CIMV2 -Class Win32_PerfFormattedData_GPUPerformanceCounters_GPUEngine | Where-Object {$_.Name -like \u0027*engtype_3D*\u0027} | Measure-Object UtilizationPercentage -Average).Average,2))}catch{\u0027N/A\u0027};$vramTotalMB=([math]::round(((Get-WmiObject Win32_VideoController | Measure-Object AdapterRAM -Sum).Sum / 1MB),2));$vramUsedMB=try{ $c=Get-Counter \u0027\\GPU Adapter Memory(*)\\Dedicated Usage\u0027; if($c.CounterSamples.Count -gt 0){[math]::round(($c.CounterSamples | Measure-Object -Property CookedValue -Sum).Sum / 1MB,2)}else{\u0027N/A\u0027}}catch{\u0027N/A\u0027};$mem=Get-WmiObject Win32_OperatingSystem;$memTotalMB=[math]::round($mem.TotalVisibleMemorySize/1024,2);$memFreeMB=[math]::round($mem.FreePhysicalMemory/1024,2);$memUsedMB=$memTotalMB-$memFreeMB;$memUsagePcnt=[math]::round(($memUsedMB/$memTotalMB)*100,2);Write-Output (\u0027CPU Usage: \u0027 \u002B $cpu \u002B \u0027 %; GPU Usage: \u0027 \u002B $gpu \u002B \u0027 %; VRAM Total: \u0027 \u002B $vramTotalMB \u002B \u0027 MB; VRAM Usage: \u0027 \u002B $vramUsedMB \u002B \u0027 MB; Memory Usage: \u0027 \u002B $memUsagePcnt \u002B \u0027 % (\u0027 \u002B $memUsedMB \u002B \u0027 MB used of \u0027 \u002B $memTotalMB \u002B \u0027 MB)\u0027)",
+    "Headers": {},
+    "Body": null
   },
   {
     "Name": "MyGoogleSearch",
+    "Type": "HTTP",
+    "Description": "Performs a Google search query and summarizes the top search results from the JSON response.",
     "PromptTemplate": "Summarize the top search results from Google for the query using this JSON response: ",
     "Model": "Jarvis:latest",
-    "Parameters": {
-      "temperature": "0.1"
-    },
     "DataURL": "https://www.google.com",
+    "Script": null,
     "Headers": {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
       "Accept": "application/json",
@@ -39,12 +42,12 @@
   },
   {
     "Name": "UmartSalesScrape",
-    "PromptTemplate": "Summarize the current sales and discounts from Umart's website using this JSON response, including relevant associated webpages and links found within the data: ",
+    "Type": "HTTP",
+    "Description": "Scrapes the Umart website homepage to summarize current sales, discounts, and related webpages including relevant links found within the page content.",
+    "PromptTemplate": "Summarize the current sales and discounts from Umart\u0027s website using this JSON response, including relevant associated webpages and links found within the data: ",
     "Model": "Jarvis:latest",
-    "Parameters": {
-      "temperature": "1"
-    },
     "DataURL": "https://www.umart.com.au/",
+    "Script": null,
     "Headers": {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
       "Accept": "text/html",
@@ -54,19 +57,89 @@
   },
   {
     "Name": "DadJokeFetcher",
-    "PromptTemplate": "Here's a dad joke fetched from the JSON response please desplay normally: ",
+    "Type": "HTTP",
+    "Description": "Fetches a random dad joke from the icanhazdadjoke API and displays it in a conversational manner.",
+    "PromptTemplate": "Here\u0027s a dad joke fetched from the JSON response please desplay normally: ",
     "Model": "Jarvis:latest",
-    "Parameters": {
-      "temperature": "0.1"
-    },
     "DataURL": "https://icanhazdadjoke.com/",
+    "Script": null,
     "Headers": {
       "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
       "Accept": "application/json",
       "Accept-Language": "en-US,en;q=0.9"
     },
     "Body": null
+  },
+  {
+    "Name": "StartMCServer1",
+    "Type": "PowerShell",
+    "Description": "Starts the specified Docker container.",
+    "PromptTemplate": "Start the container now. please describe the process as you do it",
+    "Model": "Jarvis:latest",
+    "DataURL": null,
+    "Script": "docker start \u0022MC\u0022 | Out-Null; Write-Output \u0022Docker container \u0027MC\u0027 is now running!\u0022",
+    "Headers": {},
+    "Body": null
+  },
+  {
+    "Name": "RestartMCServer1",
+    "Type": "PowerShell",
+    "Description": "Restarts the specified Docker container.",
+    "PromptTemplate": "Restart the container. please describe the process as you do it",
+    "Model": "Jarvis:latest",
+    "DataURL": null,
+    "Script": "docker restart \u0022MC\u0022| Out-Null; Write-Output \u0022Docker container \u0027MC\u0027 is now restarting!\u0022",
+    "Headers": {},
+    "Body": null
+  },
+  {
+    "Name": "StopMCServer1",
+    "Type": "PowerShell",
+    "Description": "Stops (ends) the specified Docker container.",
+    "PromptTemplate": "Stop the container. please describe the process as you do it",
+    "Model": "Jarvis:latest",
+    "DataURL": null,
+    "Script": "docker stop \u0022MC\u0022| Out-Null; Write-Output \u0022Docker container \u0027MC\u0027 is now stopping!\u0022",
+    "Headers": {},
+    "Body": null
+  },
+  {
+    "Name": "StorageAgent",
+    "Type": "PowerShell",
+    "Description": "Displays disk usage for all local drives.",
+    "PromptTemplate": "How full are my disks?",
+    "Model": "Jarvis:latest",
+    "DataURL": null,
+    "Script": "Get-PSDrive -PSProvider \u0027FileSystem\u0027 | ForEach-Object { $used = [math]::Round($_.Used / 1GB, 1); $free = [math]::Round($_.Free / 1GB, 1); $total = $used \u002B $free; $pct = if ($total -ne 0) { [math]::Round(($used / $total) * 100, 1) } else { 0 }; Write-Output \\\u0022Drive $($_.Name): $pct% used ($used GB of $total GB)\\\u0022 }",
+    "Headers": {},
+    "Body": null
+  },
+  {
+    "Name": "WeatherBaldivisAgent",
+    "Type": "HTTP",
+    "Description": "Fetches current weather in Baldivis using wttr.in and summarizes the conditions.",
+    "PromptTemplate": "Summarize the weather in Baldivis using this JSON response, including temperature, condition, wind, and humidity if available.",
+    "Model": "Jarvis:latest",
+    "DataURL": "https://wttr.in/Baldivis?format=j1",
+    "Script": null,
+    "Headers": {
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36",
+      "Accept": "application/json",
+      "Accept-Language": "en-US,en;q=0.9"
+    },
+    "Body": null
+  },
+  {
+    "Name": "Australian Capital Cities",
+    "Type": "Script",
+    "Description": "Returns a list of capital cities in each Australian state",
+    "PromptTemplate": "Please provide the request.",
+    "Model": "Jarvis:latest",
+    "DataURL": null,
+    "Script": "powershell -Command \u0022@([AustralianStates] | For-EachObject { Write-Host $_; $capitals = @(); Get-ChildItem -Path \u0027C:\\path\\to\\data\\australia-cities.txt\u0027 | Where-Object { $_.Name -like $_ \u002B \u0027_capital.txt\u0027 } | ForEach-Object { $capitals \u002B= [IO.File]::ReadAllText($_.FullName) }; Write-Host $capitals\u0022",
+    "Headers": {
+      "Content-Type": "text/plain"
+    },
+    "Body": ""
   }
-
-
 ]

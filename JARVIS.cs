@@ -1,10 +1,10 @@
-﻿using System.Text;
+﻿using JarvisChat.Configs;
+using System.Diagnostics;
+using System.Speech.Recognition;
+using System.Speech.Synthesis;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Speech.Synthesis;
-using System.Speech.Recognition;
-using System.Diagnostics;
-using JarvisChat.Configs;
 
 namespace JarvisChat
 {
@@ -12,13 +12,13 @@ namespace JarvisChat
 
     public class Jarvis
     {
-        private readonly List<AgentConfig> agentConfigs = AgentLoader.LoadAgents("Configs/Agents.json");
         private AgentRunner? runner;
 
 
         private readonly HttpClient client = new() { Timeout = Timeout.InfiniteTimeSpan };
         private readonly SpeechSynthesizer tts = new();
         private Process? ollamaProcess;
+        private List<AgentConfig> agentConfigs = AgentManager.LoadAgentsAsync().GetAwaiter().GetResult();
         private readonly List<Message> conversationHistory = new();
 
         private class Message
@@ -68,7 +68,7 @@ namespace JarvisChat
         private void InitializeTTS()
         {
             tts.SelectVoice("Microsoft David Desktop");
-            tts.Rate = 3;
+            tts.Rate = 2;
         }
 
         private async Task RunTextModeLoop()
@@ -87,7 +87,7 @@ namespace JarvisChat
                 }
 
                 // Try handle as agent command first
-                bool handled = HandleAgentCommand(userInput);
+                bool handled = HandleAgentCommandAsync(userInput);
                 if (handled) continue;
 
                 conversationHistory.Add(new Message { Role = "user", Content = userInput });
@@ -111,7 +111,7 @@ namespace JarvisChat
 
                 if (userInput.StartsWith("Jarvis:", StringComparison.OrdinalIgnoreCase))
                 {
-                    HandleAgentCommand(userInput.Substring("Jarvis:".Length).Trim());
+                    HandleAgentCommandAsync(userInput.Substring("Jarvis:".Length).Trim());
                     continue;
                 }
 
@@ -202,9 +202,45 @@ namespace JarvisChat
             }
         }
 
-        private bool HandleAgentCommand(string command)
+        private bool HandleAgentCommandAsync(string command)
         {
+            
+
+            if (command.Trim().Equals("CreateAgent", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.Write("Enter a prompt for your new agent: ");
+                string? agentPrompt = Console.ReadLine();
+
+                try
+                {
+                    // Run async code synchronously
+                    var agent = AgentBuilder.BuildAgentFromPromptAsync(agentPrompt!).GetAwaiter().GetResult();
+                    var newagent = AgentManager.AddAgentAsync(agent).GetAwaiter().GetResult();
+                    agentConfigs.Add(newagent);
+                    AgentManager.SaveAgentsAsync(agentConfigs).GetAwaiter().GetResult();
+                    Console.WriteLine($"Agent '{agent.Name}' created and added.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Failed to create agent:");
+                    Console.WriteLine(ex.ToString());
+                }
+                return true;
+            }
+
+            if (command.Contains("display all agents", StringComparison.OrdinalIgnoreCase))
+            {
+                
+                Console.WriteLine("Available Agents: " + agentConfigs.Count.ToString());
+                foreach (var agent in agentConfigs)
+                {
+                    Console.WriteLine($"- {agent.Name}: {agent.Description}");
+                }
+                return true;
+            }
+
             if (runner == null) return false;
+
             try
             {
                 var parts = command.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
@@ -215,17 +251,18 @@ namespace JarvisChat
 
                 var config = agentConfigs.FirstOrDefault(a => a.Name.Equals(agentName, StringComparison.OrdinalIgnoreCase));
                 if (config == null) return false;
+
                 string agentresult = runner.RunAgentAsync(agentName).GetAwaiter().GetResult();
                 string result = config.PromptTemplate + agentresult;
 
                 conversationHistory.Add(new Jarvis.Message { Role = "user", Content = result });
 
-                var respomse = ChatWithOllama().GetAwaiter().GetResult();
+                var response = ChatWithOllama().GetAwaiter().GetResult();
 
-                conversationHistory.Add(new Jarvis.Message { Role = "assistant", Content = respomse });
+                conversationHistory.Add(new Jarvis.Message { Role = "assistant", Content = response });
 
-                Console.WriteLine("\nJarvis: " + respomse + "\n");
-                tts.SpeakAsync(respomse);
+                Console.WriteLine("\nJarvis: " + response + "\n");
+                tts.SpeakAsync(response);
 
                 return true;
             }
@@ -236,18 +273,5 @@ namespace JarvisChat
             }
         }
 
-        public float avg(List<float> values)
-        {
-            float total = 0;
-            foreach (var v in values)
-            {
-                total += v;
-            }
-            float avg = total / values.Count;
-            float avg2 = (float)Math.Round(avg, 2);
-            return avg2;
-        }
     }
-
-
 }

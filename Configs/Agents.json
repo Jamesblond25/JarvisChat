@@ -128,18 +128,5 @@
       "Accept-Language": "en-US,en;q=0.9"
     },
     "Body": null
-  },
-  {
-    "Name": "Australian Capital Cities",
-    "Type": "Script",
-    "Description": "Returns a list of capital cities in each Australian state",
-    "PromptTemplate": "Please provide the request.",
-    "Model": "Jarvis:latest",
-    "DataURL": null,
-    "Script": "powershell -Command \u0022@([AustralianStates] | For-EachObject { Write-Host $_; $capitals = @(); Get-ChildItem -Path \u0027C:\\path\\to\\data\\australia-cities.txt\u0027 | Where-Object { $_.Name -like $_ \u002B \u0027_capital.txt\u0027 } | ForEach-Object { $capitals \u002B= [IO.File]::ReadAllText($_.FullName) }; Write-Host $capitals\u0022",
-    "Headers": {
-      "Content-Type": "text/plain"
-    },
-    "Body": ""
   }
 ]

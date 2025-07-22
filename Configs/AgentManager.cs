@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Threading.Tasks;
 using JarvisChat.Configs;
 
 namespace JarvisChat
@@ -20,7 +21,6 @@ namespace JarvisChat
 
                 var json = await File.ReadAllTextAsync(AgentsFilePath);
                 var agents = JsonSerializer.Deserialize<List<AgentConfig>>(json, Options) ?? new();
-                Console.WriteLine($"Loaded {agents.Count} agents.");
                 return agents;
             }
             catch (Exception ex)
@@ -56,13 +56,23 @@ namespace JarvisChat
             }
 
             agentslist.Add(newAgent);
-            int counter = 0;
-            foreach (var agent in agentslist)
-            {
-                counter += 1;
-            }
-            Console.WriteLine(counter);
             return newAgent;
+        }
+
+        public static async void DeleteAgent(string AgentName)
+        {
+            var listagents = await LoadAgentsAsync();
+            foreach (var agentConfig in listagents.ToList())
+            {
+                if( agentConfig.Name.Equals(AgentName, StringComparison.OrdinalIgnoreCase))
+                {
+                    listagents.Remove(agentConfig);
+                    Console.WriteLine($"{AgentName} Has been Deleted!");
+                    SaveAgentsAsync(listagents).GetAwaiter().GetResult();
+                    return;
+                }
+            }
+            Console.WriteLine("Cant Find Agent to delete!");
         }
     }
 }

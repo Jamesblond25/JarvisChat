@@ -202,10 +202,16 @@ namespace JarvisChat
             }
         }
 
+        //plan is to add a more NLP way to activate agents through comparing prompts to descr of agents to see if similar or asking for it
         private bool HandleAgentCommandAsync(string command)
         {
-            
-
+            if(command.Trim().Equals("DeleteAgent", StringComparison.OrdinalIgnoreCase))
+            {
+                Console.WriteLine("Which agent is to be Deleted?");
+                string? AgentToDel = Console.ReadLine();
+                AgentManager.DeleteAgent(AgentToDel!);
+                return true;
+            }
             if (command.Trim().Equals("CreateAgent", StringComparison.OrdinalIgnoreCase))
             {
                 Console.Write("Enter a prompt for your new agent: ");

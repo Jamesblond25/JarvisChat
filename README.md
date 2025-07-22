@@ -13,7 +13,7 @@
 - 🧩 Plugin-based architecture
 
 > 🧭 **Planned:**
-> - 📅 WPF calendar UI (full-year view)
+> - 📅 WPF Frontend For The End User
 > - 📱 Android remote control app (via WireGuard)
 
 ---
@@ -69,10 +69,10 @@ JarvisChat/
 🧪 Planned Features
 Feature	Status	Description
 📱 Android App	Planned	WireGuard-powered control app for Jarvis on PC
-📅 WPF Calendar UI	Planned	Full-year visual calendar for desktop interface
+📅 WPF FrontEnd
 🔐 Authentication	Planned	Basic local user access controls
 🌐 Web Interface	Planned	Remote control and chat via browser
-
+```
 🙌 Acknowledgments
 Ollama – Local LLM framework
 

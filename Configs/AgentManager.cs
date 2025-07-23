@@ -6,7 +6,7 @@ namespace JarvisChat
 {
     public static class AgentManager
     {
-        private static readonly string AgentsFilePath = "C:\\Users\\niall\\Desktop\\Programming\\JarvisChat\\Configs\\Agents.json";
+        private static readonly string AgentsFilePath = "Configs\\Agents.json";
         private static readonly JsonSerializerOptions Options = new() { WriteIndented = true };
 
         public static async Task<List<AgentConfig>> LoadAgentsAsync()

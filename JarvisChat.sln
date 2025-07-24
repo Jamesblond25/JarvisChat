@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JarvisChat", "JarvisChat.csproj", "{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JarvisChat", "JarvisChat.csproj", "{84AADEF3-2776-CC70-77D6-9D942AF3176A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC9D0D43-CFB4-4AA4-90C9-5FC9D4D5B638}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84AADEF3-2776-CC70-77D6-9D942AF3176A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84AADEF3-2776-CC70-77D6-9D942AF3176A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84AADEF3-2776-CC70-77D6-9D942AF3176A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84AADEF3-2776-CC70-77D6-9D942AF3176A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

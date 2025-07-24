@@ -14,7 +14,7 @@
 
 > 🧭 **Planned:**
 > - 📅 WPF Frontend For The End User
-> - 📱 Android remote control app (via WireGuard)
+> - 📱 Android remote control app
 
 ---
 

@@ -115,7 +115,7 @@
     "Body": null
   },
   {
-    "Name": "WeatherBaldivisAgent",
+    "Name": "WeatherAgent",
     "Type": "HTTP",
     "Description": "Fetches current weather in Baldivis using wttr.in and summarizes the conditions.",
     "PromptTemplate": "Summarize the weather in Baldivis using this JSON response, including temperature, condition, wind, and humidity if available.",
